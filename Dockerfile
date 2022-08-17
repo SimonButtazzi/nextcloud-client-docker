@@ -20,7 +20,7 @@ ENV USER=$USER \
     NC_SILENT=false \
     NC_EXIT=false   \
     NC_HIDDEN=false \
-    NC_DELAY=2 \
+    NC_DELAY=5 \
     WATCH_FOLDER=true
 
 
