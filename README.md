@@ -91,8 +91,8 @@ default: 300 (300 /60 = 5 Minutes)
 ##### NC_EXIT
 If "true" the sync will happen once and then the container will exit, very usefull for using 
 in conjunction with cron or schedulers
-default: false
-example: 
+default: false 
+
 ## Advanced settings
 
 ##### USER
@@ -119,6 +119,18 @@ default: false
 whether or not nextcloud should be forced to sync hidden files
 
 default: false
+
+##### WATCH_FOLDER
+If "true" the sync will be triggered by a file change OR after timeout defined by NC_INTERVAL. Reduces polling without waiting to push local changes.
+This is very usefull for saving resources if there are not much local changes.
+
+default: false
+
+##### NC_DELAY
+Seconds to wait after a sync was triggered by file change (WATCH_FOLDER=true)
+Prevents sync to run too often. Also usefull to make sure a file was written completely instead of syncing partial files (e.g. new-file.zip.part).
+
+default: 2
 
 
 Any comment or propblem feel free to [fill an issue](https://github.com/juanitomint/nextcloud-client-docker/issues/new) or make a PR!

@@ -35,6 +35,8 @@ fi
 [ "$NC_SILENT" == true ] && echo "[ info run.sh ]: Silent mode enabled" | ts "${LOG_DATE_FORMAT}"
 [ "$NC_HIDDEN" == true ] && echo "[ info run.sh ]: Sync hidden files enabled" | ts "${LOG_DATE_FORMAT}"
 [ "$NC_TRUST_CERT" == true ] && echo "[ info run.sh ]: Trust any SSL certificate" | ts "${LOG_DATE_FORMAT}"
+[ "$WATCH_FOLDER" == true ] && echo "[ info run.sh ]: Trigger sync by changes in local folder" | ts "${LOG_DATE_FORMAT}"
+[ "$WATCH_FOLDER" == true ] && echo "[ info run.sh ]: Delay triggered sync by ${NC_DELAY}s" | ts "${LOG_DATE_FORMAT}"
 
 while true
 do
