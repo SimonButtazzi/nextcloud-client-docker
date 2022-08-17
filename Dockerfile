@@ -17,13 +17,15 @@ ENV USER=$USER \
     NC_TRUST_CERT=false \
     NC_SOURCE_DIR="/media/nextcloud/" \
     NC_PATH="" \
-    NC_SILENT=false \
+    NC_SILENT=true \
     NC_EXIT=false   \
-    NC_HIDDEN=false
+    NC_HIDDEN=false \
+    NC_DELAY=2 \
+    WATCH_FOLDER=true
 
 
 # update repositories and install nextcloud-client
-RUN apk update && apk add nextcloud-client moreutils sudo && rm -rf /etc/apk/cache
+RUN apk update && apk add nextcloud-client moreutils sudo inotify-tools && rm -rf /etc/apk/cache
 
 # add run script
 ADD run.sh /usr/bin/run.sh

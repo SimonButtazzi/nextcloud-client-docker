@@ -38,7 +38,7 @@ fi
 
 while true
 do
-	[ "$NC_SILENT" == true ] && echo "[ info run.sh ]: Start sync from $NC_URL to $NC_SOURCE_DIR" | ts "${LOG_DATE_FORMAT}"
+	
 
 	set --
 	[ "$NC_HIDDEN" ] && set -- "$@" "-h"
@@ -48,8 +48,19 @@ do
 	[ "$EXCLUDE" ] && set -- "$@" "--exclude" "$EXCLUDE"
 	[ "$UNSYNCEDFOLDERS" ] && set -- "$@" "--unsyncedfolders" "$UNSYNCEDFOLDERS"
 	set -- "$@" "--non-interactive" "-u" "$NC_USER" "-p" "$NC_PASS" "$NC_SOURCE_DIR" "$NC_URL"
-	sudo -u \#$USER_UID -g \#$USER_GID nextcloudcmd "$@"
-
+	
+	
+	
+	if [ "$WATCH_FOLDER" = true ] ; then
+        [ "$NC_SILENT" == true ] && echo "[ info run.sh ]: Listening ${NC_INTERVAL}s for changes in $NC_SOURCE_DIR to start sync from $NC_URL to $NC_SOURCE_DIR" | ts "${LOG_DATE_FORMAT}"
+        
+        sudo -u \#$USER_UID -g \#$USER_GID inotifywait --timeout ${NC_INTERVAL} --exclude .*.db -e close_write "$NC_SOURCE_DIR" ; sleep ${NC_DELAY} ; sudo -u \#$USER_UID -g \#$USER_GID nextcloudcmd "$@"
+    else
+        [ "$NC_SILENT" == true ] && echo "[ info run.sh ]: Start sync from $NC_URL to $NC_SOURCE_DIR" | ts "${LOG_DATE_FORMAT}"
+        
+        sudo -u \#$USER_UID -g \#$USER_GID nextcloudcmd "$@"
+	fi
+	
 	[ "$NC_SILENT" == true ] && echo "[ info run.sh ]: Sync done" | ts "${LOG_DATE_FORMAT}"
 
 	#check if exit!
@@ -59,6 +70,10 @@ do
 		fi
 		exit
 	fi
-	echo "[ info run.sh ]: Wait ${NC_INTERVAL}s until next sync" | ts "${LOG_DATE_FORMAT}"
-	sleep $NC_INTERVAL
+	
+	if [ "$WATCH_FOLDER" != true ] ; then 
+        echo "[ info run.sh ]: Wait ${NC_INTERVAL}s until next sync" | ts "${LOG_DATE_FORMAT}"
+        sleep ${NC_INTERVAL}
+	fi
+
 done
