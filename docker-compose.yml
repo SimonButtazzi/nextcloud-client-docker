@@ -18,5 +18,7 @@ services:
             USER_UID: 1000
             NC_TRUST_CERT: 'false'
             NC_HIDDEN: 'false'
+            WATCH_FOLDER: 'false'
+            NC_DELAY: 5
         volumes:
             - ./sync-folder:/media/nextcloud
